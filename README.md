@@ -1,7 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
-# wanted-cloud/terraform-module-template
+# wanted-cloud/terraform-azure-keyvault
 
-This repository represents a template for a Terraform building block module as we think it should be done, so it's for sure opinionated but in our eyes simple and powerful. Feel free to use or contribute.
+Terraform building block module for management of Azure Keyvault.
 
 ## Table of contents
 
@@ -15,19 +15,77 @@ This repository represents a template for a Terraform building block module as w
 
 ## Requirements
 
-No requirements.
+The following requirements are needed by this module:
+
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 1.9)
+
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>=4.20.0)
 
 ## Providers
 
-No providers.
+The following providers are used by this module:
+
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (>=4.20.0)
 
 ## Required Inputs
 
-No required inputs.
+The following input variables are required:
+
+### <a name="input_name"></a> [name](#input\_name)
+
+Description: Name of the Azure Keyvault.
+
+Type: `string`
+
+### <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name)
+
+Description: Name of the resource group in which the Azure Keyvault will be created.
+
+Type: `string`
 
 ## Optional Inputs
 
 The following input variables are optional (have default values):
+
+### <a name="input_enable_rbac_authorization"></a> [enable\_rbac\_authorization](#input\_enable\_rbac\_authorization)
+
+Description: Enable RBAC authorization for the Key Vault.
+
+Type: `bool`
+
+Default: `true`
+
+### <a name="input_enabled_for_deployment"></a> [enabled\_for\_deployment](#input\_enabled\_for\_deployment)
+
+Description: Whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
+
+Type: `bool`
+
+Default: `false`
+
+### <a name="input_enabled_for_disk_encryption"></a> [enabled\_for\_disk\_encryption](#input\_enabled\_for\_disk\_encryption)
+
+Description: Whether Azure Virtual Machines are permitted to use the key vault for disk encryption.
+
+Type: `bool`
+
+Default: `false`
+
+### <a name="input_enabled_for_template_deployment"></a> [enabled\_for\_template\_deployment](#input\_enabled\_for\_template\_deployment)
+
+Description: Whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+
+Type: `bool`
+
+Default: `false`
+
+### <a name="input_location"></a> [location](#input\_location)
+
+Description: Location of the resource group in which the Azure Keyvault will be created, if not set it will be the same as the resource group.
+
+Type: `string`
+
+Default: `""`
 
 ### <a name="input_metadata"></a> [metadata](#input\_metadata)
 
@@ -37,17 +95,70 @@ Type:
 
 ```hcl
 object({
-    resource_timeouts = optional(object({
-      create = optional(string, "30m")
-      read   = optional(string, "5m")
-      update = optional(string, "30m")
-      delete = optional(string, "30m")
-    }), {})
+    resource_timeouts = optional(
+      map(
+        object({
+          create = optional(string, "30m")
+          read   = optional(string, "5m")
+          update = optional(string, "30m")
+          delete = optional(string, "30m")
+        })
+      ), {}
+    )
     tags                     = optional(map(string), {})
     validator_error_messages = optional(map(string), {})
     validator_expressions    = optional(map(string), {})
   })
 ```
+
+Default: `{}`
+
+### <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls)
+
+Description: Network ACLs for the Key Vault.
+
+Type:
+
+```hcl
+object({
+    bypass                     = string
+    default_action             = string
+    ip_rules                   = optional(list(string))
+    virtual_network_subnet_ids = optional(list(string))
+  })
+```
+
+Default: `null`
+
+### <a name="input_purge_protection_enabled"></a> [purge\_protection\_enabled](#input\_purge\_protection\_enabled)
+
+Description: Whether purge protection is enabled for the Key Vault.
+
+Type: `bool`
+
+Default: `false`
+
+### <a name="input_sku_name"></a> [sku\_name](#input\_sku\_name)
+
+Description: SKU name for the Key Vault. Possible values are 'standard' and 'premium'.
+
+Type: `string`
+
+Default: `"standard"`
+
+### <a name="input_soft_delete_retention_days"></a> [soft\_delete\_retention\_days](#input\_soft\_delete\_retention\_days)
+
+Description: The number of days that the Key Vault and its objects are retained after deletion.
+
+Type: `number`
+
+Default: `7`
+
+### <a name="input_tags"></a> [tags](#input\_tags)
+
+Description: A map of tags to assign to the resource.
+
+Type: `map(string)`
 
 Default: `{}`
 
@@ -57,7 +168,11 @@ No outputs.
 
 ## Resources
 
-No resources.
+The following resources are used by this module:
+
+- [azurerm_key_vault.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) (resource)
+- [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
+- [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
 
 ## Usage
 
@@ -67,7 +182,7 @@ Module was also published via Terraform Registry and can be used as a module fro
 
 ```hcl
 module "example" {
-  source  = "wanted-cloud/..."
+  source  = "wanted-cloud/keyvault/azure"
   version = "x.y.z"
 }
 ```
