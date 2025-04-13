@@ -166,6 +166,27 @@ Type: `bool`
 
 Default: `false`
 
+### <a name="input_secrets"></a> [secrets](#input\_secrets)
+
+Description: List of secrets to create in the Key Vault.
+
+Type:
+
+```hcl
+list(object({
+    name             = string
+    value            = optional(string)
+    value_wo         = optional(string)
+    value_wo_version = optional(string)
+    content_type     = optional(string)
+    not_before_date  = optional(string)
+    expiration_date  = optional(string)
+    tags             = optional(map(string), {})
+  }))
+```
+
+Default: `[]`
+
 ### <a name="input_sku_name"></a> [sku\_name](#input\_sku\_name)
 
 Description: SKU name for the Key Vault. Possible values are 'standard' and 'premium'.
@@ -200,6 +221,7 @@ The following resources are used by this module:
 
 - [azurerm_key_vault.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) (resource)
 - [azurerm_key_vault_access_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) (resource)
+- [azurerm_key_vault_secret.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
 

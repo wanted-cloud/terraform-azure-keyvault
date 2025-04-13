@@ -95,3 +95,18 @@ variable "access_policies" {
   }))
   default = []
 }
+
+variable "secrets" {
+  description = "List of secrets to create in the Key Vault."
+  type = list(object({
+    name             = string
+    value            = optional(string)
+    value_wo         = optional(string)
+    value_wo_version = optional(string)
+    content_type     = optional(string)
+    not_before_date  = optional(string)
+    expiration_date  = optional(string)
+    tags             = optional(map(string), {})
+  }))
+  default = []
+}
