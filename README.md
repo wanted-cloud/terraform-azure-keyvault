@@ -221,7 +221,7 @@ module "example" {
 The minimal usage for the module is as follows:
 
 ```hcl
-module "template" {
+module "example" {
     source = "../.."
 
     name = "example-keyvault"

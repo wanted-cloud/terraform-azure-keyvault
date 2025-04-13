@@ -6,10 +6,10 @@ resource "azurerm_key_vault_access_policy" "this" {
   object_id      = each.value.object_id
   application_id = try(each.value.application_id, null)
 
-  certificate_permissions = each.value.certificate_permissions != null ? each.value.certificate_permissions : []
-  storage_permissions     = each.value.storage_permissions != null ? each.value.storage_permissions : []
-  key_permissions         = each.value.key_permissions != null ? each.value.key_permissions : []
-  secret_permissions      = each.value.secret_permissions != null ? each.value.secret_permissions : []
+  certificate_permissions = each.value.certificate_permissions
+  storage_permissions     = each.value.storage_permissions
+  key_permissions         = each.value.key_permissions
+  secret_permissions      = each.value.secret_permissions
 
   timeouts {
     create = try(

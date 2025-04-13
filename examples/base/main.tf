@@ -1,4 +1,4 @@
-module "template" {
+module "example" {
     source = "../.."
 
     name = "example-keyvault"
