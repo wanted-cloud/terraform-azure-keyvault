@@ -47,6 +47,26 @@ Type: `string`
 
 The following input variables are optional (have default values):
 
+### <a name="input_access_policies"></a> [access\_policies](#input\_access\_policies)
+
+Description: List of access policies for the Key Vault.
+
+Type:
+
+```hcl
+list(object({
+    name                    = string
+    object_id               = string
+    application_id          = optional(string)
+    key_permissions         = optional(list(string))
+    secret_permissions      = optional(list(string))
+    certificate_permissions = optional(list(string))
+    storage_permissions     = optional(list(string))
+  }))
+```
+
+Default: `[]`
+
 ### <a name="input_enable_rbac_authorization"></a> [enable\_rbac\_authorization](#input\_enable\_rbac\_authorization)
 
 Description: Enable RBAC authorization for the Key Vault.
@@ -130,6 +150,14 @@ object({
 
 Default: `null`
 
+### <a name="input_public_network_access_enabled"></a> [public\_network\_access\_enabled](#input\_public\_network\_access\_enabled)
+
+Description: Whether public network access is enabled for the Key Vault.
+
+Type: `bool`
+
+Default: `true`
+
 ### <a name="input_purge_protection_enabled"></a> [purge\_protection\_enabled](#input\_purge\_protection\_enabled)
 
 Description: Whether purge protection is enabled for the Key Vault.
@@ -171,6 +199,7 @@ No outputs.
 The following resources are used by this module:
 
 - [azurerm_key_vault.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) (resource)
+- [azurerm_key_vault_access_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) (resource)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
 
@@ -194,6 +223,10 @@ The minimal usage for the module is as follows:
 ```hcl
 module "template" {
     source = "../.."
+
+    name = "example-keyvault"
+    resource_group_name = "test"
+    
 }
 ```
 ## Contributing

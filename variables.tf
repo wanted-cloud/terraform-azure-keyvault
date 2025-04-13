@@ -64,6 +64,12 @@ variable "tags" {
 
 }
 
+variable "public_network_access_enabled" {
+  description = "Whether public network access is enabled for the Key Vault."
+  type        = bool
+  default     = true
+}
+
 variable "network_acls" {
   description = "Network ACLs for the Key Vault."
   type = object({
@@ -74,4 +80,18 @@ variable "network_acls" {
   })
   default = null
 
+}
+
+variable "access_policies" {
+  description = "List of access policies for the Key Vault."
+  type = list(object({
+    name                    = string
+    object_id               = string
+    application_id          = optional(string)
+    key_permissions         = optional(list(string))
+    secret_permissions      = optional(list(string))
+    certificate_permissions = optional(list(string))
+    storage_permissions     = optional(list(string))
+  }))
+  default = []
 }
