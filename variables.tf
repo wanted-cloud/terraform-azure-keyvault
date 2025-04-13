@@ -110,3 +110,13 @@ variable "secrets" {
   }))
   default = []
 }
+
+variable "certificates" {
+  description = "values for the certificates to create in the Key Vault."
+  type = list(object({
+    name     = string
+    contents = optional(string, "")
+    password = optional(string)
+  }))
+  default = []
+}

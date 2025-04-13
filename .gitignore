@@ -42,3 +42,4 @@ examples/*/.terraform.lock.hcl
 examples/*/*.tfstate
 examples/*/*.tfstate.backup
 examples/*/providers.tf
+examples/*/*.pfx

@@ -17,7 +17,7 @@ Terraform building block module for management of Azure Keyvault.
 
 The following requirements are needed by this module:
 
-- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 1.9)
+- <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (>= 1.11)
 
 - <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (>=4.20.0)
 
@@ -62,6 +62,22 @@ list(object({
     secret_permissions      = optional(list(string))
     certificate_permissions = optional(list(string))
     storage_permissions     = optional(list(string))
+  }))
+```
+
+Default: `[]`
+
+### <a name="input_certificates"></a> [certificates](#input\_certificates)
+
+Description: values for the certificates to create in the Key Vault.
+
+Type:
+
+```hcl
+list(object({
+    name     = string
+    contents = optional(string, "")
+    password = optional(string)
   }))
 ```
 
@@ -213,7 +229,11 @@ Default: `{}`
 
 ## Outputs
 
-No outputs.
+The following outputs are exported:
+
+### <a name="output_key_vault"></a> [key\_vault](#output\_key\_vault)
+
+Description: The Key Vault resource.
 
 ## Resources
 
@@ -221,6 +241,7 @@ The following resources are used by this module:
 
 - [azurerm_key_vault.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) (resource)
 - [azurerm_key_vault_access_policy.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) (resource)
+- [azurerm_key_vault_certificate.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) (resource)
 - [azurerm_key_vault_secret.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) (resource)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 - [azurerm_resource_group.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) (data source)
